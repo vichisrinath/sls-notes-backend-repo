@@ -1,13 +1,15 @@
 const AWS = require("aws-sdk");
 AWS.config.update({
-  region: "us-east-2"
+  region: "us-east-1"
 });
 const dynamoDbClient = new AWS.DynamoDB.DocumentClient();
 const dynamoDbTableName = process.env.NOTES_TABLE;
 
-const getSuccessResponse = (statusCode= 200, payload => {
-  return getResponse(statusCode, payload);
-};
+const getSuccessResponse =
+  ((statusCode = 200),
+  payload => {
+    return getResponse(statusCode, payload);
+  });
 
 const getErrorResponse = err => {
   let payload = JSON.stringify({

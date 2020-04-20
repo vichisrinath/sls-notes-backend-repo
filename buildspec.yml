@@ -13,12 +13,7 @@ phases:
     commands:
       - echo Deployment started on `date`
       - echo Deploying with the Serverless framework
-<<<<<<< HEAD
       - sls deploy -v -s $ENV_NAME
-=======
-      - serverless deploy -v -s $ENV_NAME
-
->>>>>>> master
   post_build:
     commands:
       - echo Deployment completed on `date`

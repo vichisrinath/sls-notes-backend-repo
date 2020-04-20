@@ -10,7 +10,79 @@ provider:
   endpointType: regional
   environment:
     NOTES_TABLE: ${self:service}-${opt:stage, self:provider.stage}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:PutItem
+        - dynamodb:DeleteItem
+        - dynamodb:GetItem
+      Resource: "arn:aws:dynamodb:${opt:region,self:provider.region}:*:/table/${self:provider.environment.NOTES_TABLE}"
+custom:
+  allowedHeaders:
+    - Accept
+    - Content-Type
+    - Content-Length
+    - Authorization
+    - X-Amz-Date
+    - X-Api-Key
+    - X-Amz-Security-Token
+    - X-Amz-User-Agent
+    - app_user_id
+    - app_user_name
 
+functions:
+  addnote:
+    handler: api/addnote.handler
+    description: POST /note
+    events:
+      - http:
+          path: note
+          method: post
+          cors:
+            origin: "*"
+            headers: ${self:custom.allowedHeaders}
+  getnotes:
+    handler: api/getnotes.handler
+    description: GET /note
+    events:
+      - http:
+          path: notes
+          method: get
+          cors:
+            origin: "*"
+            headers: ${self:custom.allowedHeaders}
+
+  getnote:
+    handler: api/getnote.handler
+    description: GET /note/n/{note_id}
+    events:
+      - http:
+          path: note/n/{note_id}
+          method: get
+          cors:
+            origin: "*"
+            headers: ${self:custom.allowedHeaders}
+  deletenote:
+    handler: api/deletenote.handler
+    description: DELETE /note/t/{timestamp}
+    events:
+      - http:
+          path: note/t/{timestamp}
+          method: delete
+          cors:
+            origin: "*"
+            headers: ${self:custom.allowedHeaders}
+  updatenote:
+    handler: api/updatenote.handler
+    description: PATCH /note
+    events:
+      - http:
+          path: note
+          method: patch
+          cors:
+            origin: "*"
+            headers: ${self:custom.allowedHeaders}
 resources:
   Resources:
     NotesTable:
@@ -43,3 +115,6 @@ resources:
             ProvisionedThroughput:
               ReadCapacityUnits: 1
               WriteCapacityUnits: 1
+
+plugins:
+  - serverless-offline

@@ -14,5 +14,9 @@
     "moment": "^2.24.0",
     "underscore": "^1.10.2",
     "uuid": "^7.0.3"
+  },
+  "devDependencies": {
+    "serverless": "^1.67.3",
+    "serverless-offline": "^6.1.4"
   }
 }

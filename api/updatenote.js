@@ -7,10 +7,9 @@ const moment = require("moment");
 
 exports.handler = async event => {
   try {
-    let item = JSON.parse(event.body).item;
+    let item = JSON.parse(event.body).Item;
     item.user_id = codeUtil.getUserId(event.headers);
     item.user_name = codeUtil.getUserName(event.headers);
-    item.timestamp = moment().unix();
     item.expires = moment()
       .add(90, "days")
       .unix();

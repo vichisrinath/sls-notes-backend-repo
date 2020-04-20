@@ -2,7 +2,8 @@ const codeUtil = require("./lambda-util.js");
 
 exports.handler = async event => {
   try {
-    let timestamp = parseInt(event.parthParameters.timestamp);
+    let timestamp = parseInt(event.pathParameters.timestamp);
+    
     let params = {
       TableName: codeUtil.dynamoDbTableName,
       Key: {
@@ -10,7 +11,7 @@ exports.handler = async event => {
         timestamp: timestamp
       }
     };
-    codeUtil.dynamoDbClient.delete(params).promise();
+    await codeUtil.dynamoDbClient.delete(params).promise();
     return codeUtil.getSuccessResponse({});
   } catch (err) {
     console.log("Error", err);
